@@ -5,15 +5,15 @@ import Header from './components/Header.vue';
 import Footer from './components/Footer.vue';
 
 const route = useRoute();
-const showHeaderFooter = computed(() => route.path !== '/login');
+const showFooter = computed(() => route.path !== '/login');
 </script>
 
 <template>
-  <Header v-if="showHeaderFooter" />
+  <Header />
   <main>
     <router-view />
   </main>
-  <Footer v-if="showHeaderFooter" />
+  <Footer v-if="showFooter" />
 </template>
 
 <style>

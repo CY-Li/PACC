@@ -1,51 +1,63 @@
 <template>
-  <div>
+  <div class="login-page-wrapper">
     <main>
       <!-- 快速登入 -->
+      <div class="frameTitle custom-title">
+        <div class="title-zh">快速登入</div>
+        <div class="title-en text-en">LOGIN</div>
+      </div>
       <div v-show="layoutType === 1" class="mainFrame loginFrame ">
-        <div class="frameTitle">
-          <div class="title-zh">快速登入</div>
-          <div class="title-en text-en">LOGIN</div>
-          <!-- <div class="close"><i class="bi bi-x"></i></div> -->
-        </div>
-        <div class="frameBody d-flex flex-wrap">
-          <div class="loginLayout">
-            <div class="text">會員登入</div>
-            <form @submit.prevent="login" id="login" class="loginForm">
-              <div class="login-input-group">
-                <label for="account_login" class="form-label">帳號</label>
-                <input v-model="loginForm.account" minlength="4" maxlength="20" required type="text" class="form-control" id="account_login">
-              </div>
-
-              <div class="login-input-group" style="position: relative">
-                <label for="password_login" class="form-label">密碼</label>
-                <input v-model="loginForm.pswd" minlength="4" maxlength="15" required :type="showPassword? 'text' : 'password'" class="form-control" id="password_login">
-                <span class="input-eye" @click="showPassword = !showPassword">
-                  <i class="bi" :class="[showPassword? 'bi-eye' : 'bi-eye-slash']"></i>
-                 </span>
-                <div @click="layoutType = 3" class="forget"><span>忘記密碼</span><i class="bi bi-question-circle"></i></div>
-              </div>
-              <div class="d-block align-items-end d-lg-flex">
-                <div class="valid-group login-input-group">
-                  <label for="valid_login" class="form-label">請輸入驗證碼</label>
-                  <input v-model="loginForm.validCode" required type="text" class="form-control" id="valid_login" name="valid_login">
-                </div>
-                <div class="validCanvas"><canvas @click="drawCanvas" id="mycanvas" ref="myCanvasRef" width='160' height='40'></canvas></div>
-              </div>
-
-              <button class="submitBtn common-btn">
-                <div class="btn-zh w-100">登　　入</div>
-                <div class="btn-en w-100 text-en">LOGIN</div>
-              </button>
-            </form>
+        <div class="frameBody">
+          <div class="social-login-section">
+            <p class="social-login-title">推薦使用 LINE 快速登入/註冊</p>
+            <button class="line-login-btn" @click="handleLineLogin">
+              <i class="bi bi-line"></i>
+              <span>使用 LINE 帳號繼續</span>
+            </button>
           </div>
-          <div class="toRegist">
-            <div class="toRegistTextZh">註冊會員</div>
-            <div class="toRegistTextEn text-en">REGISTED MEMBER</div>
-            <div class="submitBtn common-btn" @click="layoutType = 2">
-              <div class="btn-zh w-100 text-center">註冊會員</div>
-            </div>
+
+          <div class="divider">
+            <span class="divider-text">或</span>
           </div>
+
+          <div class="traditional-login-section">
+            <a href="javascript:;" @click="showTraditionalLogin = !showTraditionalLogin" class="traditional-login-toggle">
+              使用帳號密碼登入
+              <i class="bi" :class="showTraditionalLogin ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+            </a>
+
+                        <div v-show="showTraditionalLogin" class="loginLayout-full-width">
+                          <div class="text">會員登入</div>
+                          <form @submit.prevent="login" id="login" class="loginForm">
+                            <div class="login-input-group">
+                              <label for="account_login" class="form-label">帳號</label>
+                              <input v-model="loginForm.account" minlength="4" maxlength="20" required type="text" class="form-control" id="account_login">
+                            </div>
+            
+                            <div class="login-input-group" style="position: relative">
+                              <label for="password_login" class="form-label">密碼</label>
+                              <input v-model="loginForm.pswd" minlength="4" maxlength="15" required :type="showPassword? 'text' : 'password'" class="form-control" id="password_login">
+                              <span class="input-eye" @click="showPassword = !showPassword">
+                                <i class="bi" :class="[showPassword? 'bi-eye' : 'bi-eye-slash']"></i>
+                              </span>
+                              <div @click="layoutType = 3" class="forget"><span>忘記密碼</span><i class="bi bi-question-circle"></i></div>
+                            </div>
+                            <div class="captcha-container">
+                              <div class="valid-group login-input-group">
+                                <label for="valid_login" class="form-label">請輸入驗證碼</label>
+                                <input v-model="loginForm.validCode" required type="text" class="form-control" id="valid_login" name="valid_login">
+                              </div>
+                              <div class="validCanvas"><canvas @click="drawCanvas" id="mycanvas" ref="myCanvasRef" width='160' height='40'></canvas></div>
+                            </div>
+            
+                            <button class="submitBtn common-btn">
+                              <div class="btn-zh w-100">登　　入</div>
+                            </button>
+                            <div class="secondary-register-link">
+                              還沒有帳號嗎？<a href="javascript:;" @click="layoutType = 2">註冊會員</a>
+                            </div>
+                          </form>
+                        </div>          </div>
         </div>
       </div>
         
@@ -190,6 +202,15 @@ import { useRouter, useRoute } from 'vue-router'; // Import useRouter and useRou
 
 const router = useRouter();
 const route = useRoute();
+
+const showTraditionalLogin = ref(false);
+
+const handleLineLogin = () => {
+  // 後續步驟：
+  // 1. 從後端獲取 LINE 登入 URL。
+  // 2. 將用戶重定向到該 URL。
+  alert("準備串接 LINE 登入...");
+};
 
 // Reactive state
 const layoutType = ref(1); // 1登入 2註冊 3忘記密碼 4條款
@@ -368,61 +389,79 @@ onMounted(() => {
 <style lang="scss" scoped>
 @use '../assets/scss/_variables.scss' as *;
 
+.login-page-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f9fa;
+  padding: 20px 0;
+}
+
 .mainFrame {
-  width: 80%;
-  min-width: 950px;
-  margin: 5% auto;
+  width: 90%;
+  max-width: 650px;
+  margin: 20px;
   background: white;
-  border-radius: 0 60px 0 60px;
-  @media #{$mobile} {
-    width: 90%;
-    min-width: 90%;
-    border-radius: 8px;
-  }
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.custom-title {
+  margin-bottom: 20px;
 }
 
 .frameTitle {
-  width: 100%;
   text-align: center;
-  background: transparent linear-gradient(180deg, transparent 30%, #F8F2F2 100%) 0% 0% no-repeat padding-box;
-  padding: 20px;
-  border-bottom: 1px solid #e5c0b5;
+  padding: 30px 30px 20px 30px;
   position: relative;
+
   @media #{$mobile} {
-    padding: 8px;
+    padding: 24px 24px 16px 24px;
   }
+
   .title-zh {
-    font-size: 25px;
-    color: $minor;
+    font-size: 28px;
+    color: $primary;
     font-weight: bold;
     @media #{$mobile} {
-      font-size: 18px;
+      font-size: 22px;
     }
   }
+
   .title-en {
-    font-size: 12px;
+    font-size: 14px;
     color: $secondary;
+    text-transform: uppercase;
+    letter-spacing: 1px;
   }
+
   .close {
     position: absolute;
-    font-size: 40px;
-    color: $minor;
-    top: 50%;
-    right: 40px;
-    transform: translate(0, -50%);
+    font-size: 32px;
+    color: $secondary;
+    top: 20px;
+    right: 20px;
     cursor: pointer;
+    transition: color 0.3s;
+    &:hover {
+      color: $primary;
+    }
     @media #{$mobile} {
-      right: 10px;
+      font-size: 28px;
+      top: 15px;
+      right: 15px;
     }
   }
 }
 
 .frameBody {
-  padding: 75px 0;
+  padding: 10px 50px 40px 50px;
   position: relative;
   @media #{$mobile} {
-    padding: 0 16px;
+    padding: 10px 24px 30px 24px;
   }
+
   .return {
     position: absolute;
     display: flex;
@@ -435,358 +474,367 @@ onMounted(() => {
       margin-right: 8px;
     }
   }
-  .registForm {
-    width: 85%;
-    min-width: 920px;
+
+  .registForm, .loginForm {
+    width: 100%;
     margin: auto;
-    @media #{$mobile} {
-      width: 100%;
-      min-width: 100%;
-      padding: 30px 0;
-    }
   }
+
   .customLabel {
     display: flex;
-    align-items: center;
-    word-break: keep-all;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
+    flex-direction: column;
+    margin-bottom: 24px;
+
     label {
-      margin-right: 12px;
-      display: flex;
       color: $primary;
-      @media #{$mobile} {
-        margin-bottom: 8px;
-        width: 100%;
-        font-size: 14px;
-      }
+      font-weight: 500;
+      margin-bottom: 8px;
     }
+
     .required {
       color: $minor;
-      margin-left: 16px;
-      @media #{$mobile} {
-        margin-left: 8px;
-      }
+      margin-left: 4px;
     }
-    input:not([type=radio]) {
-      border: 1px solid $secondary;
+
+    input:not([type=radio]), select {
+      border: 1px solid #ddd;
       border-radius: 8px;
-      height: 46px;
-      width: 445px;
+      height: 48px;
+      width: 100%;
       outline: 0;
-      padding-left: 1em;
+      padding: 0 1em;
+      transition: box-shadow 0.2s;
+      background-color: #fdfdfd;
+
       &:focus {
-        box-shadow: 0 0 0 0.25rem rgba(222,172,156,.25);
-      }
-      @media #{$mobile} {
-        width: 100%;
-        height: 36px;
-        font-size: 14px;
+        box-shadow: 0 0 0 3px rgba(222,172,156,.25);
+        border-color: $secondary;
       }
     }
+    
     .tip {
       width: 100%;
       color: $secondary;
-      margin-top: 10px;
-      padding-left: 6.5em;
-      word-break: break-all;
-      @media #{$mobile} {
-        padding-left: 0;
-        font-size: 12px;
-      }
+      margin-top: 8px;
+      font-size: 13px;
+      line-height: 1.5;
     }
-    .phoneCheck {
-      position: absolute;
-      top: 50%;
-      left: calc(100% + 20px);
-      transform: translate(0, -50%);
-      display: flex;
-      align-items: center;
-      @media #{$mobile} {
-        left: auto;
-        right: 4px;
-      }
-      .checkIcon {
-        color: #88c858;
-        margin-right: 8px;
-        font-size: 32px;
-        @media #{$mobile} {
-          font-size: 26px;
-        }
-      }
-    }
-    .messageInput {
-      @media #{$mobile} {
-        width: calc(100% - 120px);
-        input {
-          border-radius: 8px 0 0 8px;
-        }
-      }
-    }
-    .sendMsgBtn {
-      width: 180px;
-      height: 46px;
-      margin-left: 20px;
-      @media #{$mobile} {
-        width: 120px;
-        margin-left: 0;
-        border-radius: 0 8px 8px 0;
-        height: 36px;
-        font-size: 14px;
-      }
-    }
-    .password-valid {
-      height: 46px;
-      margin-left: 20px;
-      display: flex;
-      padding-bottom: 4px;
-      align-items: flex-end;
-      @media #{$mobile} {
-        margin-left: 0;
-        height: 30px;
-      }
-      .levels {
-        display: flex;
-        align-items: flex-end;
-        height: 100%;
-        margin-right: 8px;
-        @media #{$mobile} {
-          padding-bottom: 2px;
-        }
-        .level {
-          border: 1px solid #88c858;
-          height: 7px;
-          width: 27px;
-          margin-right: 4px;
-          &.valid {
-            background: #88c858;
-          }
-        }
-      }
-      .msg {
-        @media #{$mobile} {
-          font-size: 12px;
-        }
-      }
-    }
-    .inputContainer {
-      @media #{$mobile} {
-        width: 100%;
-      }
-    }
+
     .phone-group-input {
       display: flex;
       select {
         width: 120px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-right: 0;
       }
       .inputContainer {
-        width: 325px;
+        width: calc(100% - 120px);
         input {
-          width: 100%;
-        }
-        @media #{$mobile} {
-          width: calc(100% - 120px);
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
         }
       }
-    }
-  }
-
-  .cellphoneInput {
-    position: relative;
-    &::before {
-      display: flex;
-      content: "+886";
-      width: 5em;
-      justify-content: center;
-      position: absolute;
-      height: 80%;
-      align-items: center;
-      top: 50%;
-      left: 0;
-      transform: translate(0, -50%);
-      border-right: 1px solid $secondary;
-      @media #{$mobile} {
-        width: 4em;
-        font-size: 14px;
-      }
-    }
-    input {
-      padding-left: 6em !important;
-      @media #{$mobile} {
-        padding-left: 4.5em !important;
-        padding-right: 40px !important;
-      }
-    }
-  }
-  .form-check {
-    @media #{$mobile} {
-      font-size: 12px;
-      margin-bottom: 30px;
-    }
-    .form-check-input {
-      border-color: #d4481c;
-      &:focus {
-        box-shadow: 0 0 0 0.25rem rgba(222,172,156,.25);
-      }
-      &:checked {
-        background-color: #d4481c;
-        border-color: #d4481c;
-      }
-    }
-  }
-  .submitBtn {
-    outline: 0;
-    border: none;
-    width: 280px;
-    height: 63px;
-    margin: 40px auto;
-    flex-wrap: wrap;
-    @media #{$mobile} {
-      width: 240px;
-      height: 55px;
-      margin: 10px auto;
-    }
-    .btn-zh {
-      color: white;
-      font-weight: bold;
-      font-size: 18px;
-      @media #{$mobile} {
-        font-size: 14px;
-      }
-    }
-    .btn-en {
-      color: $secondary;
-      font-size: 12px;
-    }
-  }
-  .loginLayout {
-    width: 50%;
-    padding: 12px 5%;
-    border-right: 1px solid #b8b8b8;
-    @media #{$mobile} {
-      width: 100%;
-      border-right: none;
-      border-bottom: 1px dashed #b8b8b8;
-      padding: 30px 0;
-    }
-    .text {
-      display: none;
-      @media #{$mobile} {
-        color: $primary;
-        display: block;
-        text-align: center;
-        margin-bottom: 12px;
-        font-size: 14px;
-      }
-    }
-    .login-input-group {
-      width: 100%;
-      margin-bottom: 8px;
-      @media #{$mobile} {
-        margin-bottom: 16px;
-      }
-      label {
-        color: $primary;
-        text-align: center;
-        width: 100%;
-        @media #{$mobile} {
-          text-align: left;
-          font-size: 14px;
-        }
-      }
-      input {
-        border-radius: 25px;
-        border: 1px solid $secondary;
-        outline: 0;
-        padding-left: 1em;
-        height: 40px;
-        &:focus {
-          box-shadow: 0 0 0 0.25rem rgba(222,172,156,.25);
-        }
-        @media #{$mobile} {
-          height: 36px;
-        }
-      }
-      &.valid-group {
-        width: 50%;
-        @media #{$mobile} {
-          width: 160px;
-          margin-bottom: 8px;
-        }
-      }
-      .input-eye {
-        position: absolute;
-        top: calc(50% + 4px);
-        right: 12px;
-        transform: translate(0, -50%);
-        cursor: pointer;
-      }
-    }
-    .forget {
-      color: $primary;
-      font-size: 12px;
-      text-align: right;
-      margin-top: 4px;
-      span, i {
-        cursor: pointer;
-      }
-      i {
-        margin-left: 4px;
-      }
-    }
-    .validCanvas {
-      width: fit-content;
-      margin-left: auto;
-      margin-bottom: 8px;
-      cursor: pointer;
-      @media #{$mobile} {
-        margin-bottom: 30px;
-        margin-left: 0;
-      }
-    }
-  }
-  .toRegist {
-    width: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-    flex-wrap: wrap;
-    text-align: center;
-    @media #{$mobile} {
-      padding: 30px 0;
-      width: 100%;
-    }
-    .toRegistTextZh {
-      color: #880f0b;
-      font-weight: bold;
-      font-size: 40px;
-      width: 100%;
-      @media #{$mobile} {
-        font-size: 16px;
-        font-weight: normal;
-      }
-
-    }
-    .toRegistTextEn {
-      font-size: 13px;
-      width: 100%;
-      color: $secondary;
-      @media #{$mobile} {
-        display: none;
-      }
-    }
-  }
-  &.terms {
-    padding: 75px 3em;
-    @media #{$mobile} {
-      padding: 75px 16px 40px 16px;
-    }
-  }
-  &.forgetBody {
-    @media #{$mobile} {
-      padding: 40px 16px 40px 16px;
     }
   }
 }
+
+.submitBtn {
+  outline: 0;
+  border: none;
+  width: 100%;
+  height: 55px;
+  margin: 20px auto 0 auto;
+  @media #{$mobile} {
+    height: 50px;
+  }
+  .btn-zh {
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+  }
+  .btn-en {
+    color: $secondary;
+    font-size: 12px;
+  }
+}
+
+.loginLayout-full-width {
+    width: 100%;
+    padding: 15px 0;
+
+    .text {
+      display: none; // No longer needed
+    }
+}
+
+.login-input-group {
+  margin-bottom: 20px;
+  label {
+    display: block;
+    color: $primary;
+    margin-bottom: 8px;
+  }
+  input {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    outline: 0;
+    padding: 0 1em;
+    height: 48px;
+    transition: box-shadow 0.2s;
+     &:focus {
+      box-shadow: 0 0 0 3px rgba(222,172,156,.25);
+      border-color: $secondary;
+    }
+  }
+
+      &.valid-group {
+
+        width: calc(100% - 180px);
+
+        @media #{$mobile} {
+
+          width: 100%;
+
+          margin-bottom: 15px;
+
+        }
+
+      }
+
+      .input-eye {
+
+        position: absolute;
+
+        top: 50%;
+
+        right: 12px;
+
+        transform: translateY(-50%);
+
+        cursor: pointer;
+
+        color: #aaa;
+
+      }
+
+    }
+
+    
+
+    .forget {
+
+      color: $primary;
+
+      font-size: 13px;
+
+      text-align: right;
+
+      margin-top: 8px;
+
+      span, i {
+
+        cursor: pointer;
+
+        &:hover {
+
+          color: $minor;
+
+        }
+
+      }
+
+      i {
+
+        margin-left: 4px;
+
+      }
+
+    }
+
+    
+
+    .captcha-container {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+    
+
+      @media #{$mobile} {
+
+        flex-direction: column;
+
+      }
+
+    }
+
+    
+
+    .validCanvas {
+
+      width: 160px;
+
+      height: 48px;
+
+      cursor: pointer;
+
+      border-radius: 8px;
+
+      overflow: hidden;
+
+      canvas {
+
+        width: 100%;
+
+        height: 100%;
+
+      }
+
+    }
+
+.secondary-register-link {
+  margin-top: 25px;
+  text-align: center;
+  font-size: 14px;
+  color: $primary;
+  a {
+    color: $minor;
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+    margin-left: 5px;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.social-login-section {
+  text-align: center;
+  padding: 10px 0 20px 0;
+  .social-login-title {
+    color: $primary;
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+
+  .line-login-btn {
+    background-color: #06C755;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 350px;
+    transition: background-color 0.3s;
+    &:hover {
+      background-color: #05a545;
+    }
+    i {
+      font-size: 24px;
+      margin-right: 12px;
+    }
+  }
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #ccc;
+  margin: 15px 0 25px 0;
+  &::before, &::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #eee;
+  }
+  .divider-text {
+    padding: 0 1em;
+    font-size: 12px;
+  }
+}
+
+.traditional-login-section {
+  text-align: center;
+  .traditional-login-toggle {
+    color: $primary;
+    text-decoration: none;
+    font-size: 15px;
+    cursor: pointer;
+    &:hover {
+      color: $minor;
+    }
+  }
+  .loginLayout-full-width {
+    margin-top: 25px;
+  }
+}
+
+// Forget & Terms specific styles
+.forgetBody, .terms {
+  .return {
+    margin-bottom: 20px;
+  }
+}
+
+.form-check {
+  margin: 20px 0;
+  .form-check-input {
+    border-color: #d4481c;
+    &:focus {
+      box-shadow: 0 0 0 0.25rem rgba(222,172,156,.25);
+    }
+    &:checked {
+      background-color: #d4481c;
+      border-color: #d4481c;
+    }
+  }
+}
+
+.cellphoneInput {
+  position: relative;
+  input {
+    padding-left: 6em !important;
+  }
+  &::before {
+    content: "+886";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 1em;
+    border-right: 1px solid #ddd;
+    color: $secondary;
+  }
+}
+
+.messageInput {
+  width: calc(100% - 150px);
+  display: inline-block;
+  input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+.sendMsgBtn {
+  width: 140px;
+  height: 48px;
+  margin-left: -5px;
+  border-radius: 0 8px 8px 0;
+  display: inline-block;
+}
+
 </style>
