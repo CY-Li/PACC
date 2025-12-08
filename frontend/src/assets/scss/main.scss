@@ -1,0 +1,89 @@
+@use 'variables' as *;
+
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+TC:500,700|Raleway:700');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital@0;1&display=swap');
+
+* {
+  font-family: 'Noto Sans TC', Microsoft JhengHei, sans-serif;
+  -webkit-overflow-scrolling: touch;
+
+}
+
+[v-cloak] {
+  opacity: 0;
+}
+
+.text-en {
+  font-family: 'Montserrat';
+}
+
+body {
+  background: #f9f9f9;
+  position: relative;
+  color: $black;
+  overflow-x: hidden;
+}
+
+body.lock-body {
+  max-height: 100%;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+img {
+  display: block;
+  width: 100%;
+}
+
+a {
+  text-decoration: none;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.color-primary {
+  color: $primary !important;
+}
+.color-secondary {
+  color: $secondary !important;
+}
+.color-minor {
+  color: $minor !important;
+}
+.fs-12 {
+  font-size: 12px !important;
+}
+
+.common-btn {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  cursor: pointer;
+  background: $primary;
+  border-radius: 50rem;
+  color: white;
+  border: none;
+  &:disabled {
+    background: $gray;
+  }
+}
+
+
+
+.mySwiper {
+  .swiper-pagination {
+    .swiper-pagination-bullet {
+      width: 18px;
+      height: 4px;
+      border-radius: 4px;
+      background: $secondary;
+    }
+    &.swiper-pagination-bullet-active {
+      background: $primary;
+    }
+  }
+}
+
