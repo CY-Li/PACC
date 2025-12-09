@@ -399,12 +399,19 @@ onMounted(() => {
 
 .mainFrame {
   width: 90%;
-  max-width: 650px;
+  max-width: 800px;
+  min-width: 500px;
   margin: 20px;
   background: white;
   border-radius: 24px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   overflow: hidden;
+  flex-shrink: 0;
+
+  @media #{$mobile} {
+    width: 300px !important;
+    min-width: 300px !important;
+  }
 }
 
 .custom-title {

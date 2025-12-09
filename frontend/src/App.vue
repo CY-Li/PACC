@@ -29,7 +29,7 @@ const showFooter = computed(() => route.path !== '/login');
 
 <style scoped>
 main {
-  padding-top: 80px; /* Default padding for desktop header */
+  /* padding-top: 80px; Default padding for desktop header */
 }
 
 @media (max-width: 992px) {
