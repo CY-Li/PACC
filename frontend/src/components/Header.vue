@@ -150,7 +150,7 @@ onUnmounted(() => {
     border-top-color: $primary;
   }
   &:hover {
-    color: lighten($black, 20%);
+    color: color.adjust($black, $lightness: 20%);
   }
 }
 

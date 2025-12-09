@@ -50,19 +50,20 @@
         <div class="records">
           <div v-for="item in filteredCase1" :key="item.tm_id" class="record" >
             <div class="recordHeader justify-content-between">
-              <div class="type">{{caseType.name}}</div>
+              <div class="type">{{item.tm_type_name}}</div>
               <div v-if="item.has_participants > 0">您目前已下標: {{ item.has_participants }}</div>
             </div>
             <!-- <div class="recordName">{{item.tm_type_name}}</div> -->
             <div class="recordFooter align-items-center">
-              <div>已下標數量：<span class="amount">{{item.tm_count}}</span></div>
+              <div>可下標數量：<span class="amount">{{item.tm_count}}</span></div>
               <!-- <div v-if="item.has_participants > 0" class="common-btn" style="width: 75px; padding: 4px 0">已下標</div> -->
               <div class="d-flex">
-                <div @click="showConfirm(item)" class="common-btn me-2" style="min-width: 75px; padding: 4px 0">可下標</div>
+                
                 <select v-if="item.bid_count >= 1 && item.tm_type != 'D'" v-model="item.qty" class="form-select" id="pay_method" name="pay_method">
                   <option selected disabled value=0>請選擇數量</option>
                   <option v-for="n in item.bid_count">{{ n }}</option>
                 </select>
+                <div @click="showConfirm(item)" class="common-btn me-2" style="min-width: 75px; padding: 4px 0; margin: 0 20px;">下標</div>
               </div>
             </div>
           </div>

@@ -1,0 +1,23 @@
+/* frontend/src/assets/scss/admin.scss */
+/*
+  This file is for admin-specific styles.
+  You can import other SCSS partials here or write global admin styles.
+*/
+
+// Example: Define some admin-specific variables
+$admin-primary-color: #007bff;
+$admin-secondary-color: #6c757d;
+$admin-bg-color: #f8f9fa;
+
+// Example: Basic styles for admin body
+body.admin-mode {
+  background-color: $admin-bg-color;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+// You can add more specific styles for admin components here.
+// For instance, if you have an AdminSidebar component, you might add:
+// .admin-sidebar {
+//   background-color: #343a40;
+//   color: white;
+// }

@@ -12,7 +12,7 @@
       </div>
       
     </div>
-    <div class="logo"><img src="/images/logo.png" alt="Logo"></div>
+    <div class="logo"><img src="/images/logo-footer.png" alt="Logo"></div>
     <div class="footerNavs">
       <router-link to="/" class="nav homeNav">
         <div>首　　頁</div>

@@ -4,6 +4,7 @@ import Login from '../views/Login.vue';
 import Hall from '../views/Hall.vue';
 import Account from '../views/Account.vue';
 import Wallet from '../views/Wallet.vue';
+import adminRoutes from './admin.js'; // Import admin routes
 
 const routes = [
   {
@@ -31,6 +32,7 @@ const routes = [
     name: 'Wallet',
     component: Wallet,
   },
+  adminRoutes, // Add admin routes to the main routes array
 ];
 
 const router = createRouter({
