@@ -1,6 +1,14 @@
 import AdminLayout from '@/layouts/AdminLayout.vue';
 import Dashboard from '@/views/admin/Dashboard.vue';
-// import UserList from '@/views/admin/UserList.vue'; // 假設未來會有這個頁面
+import Announcements from '@/views/admin/content/Announcements.vue';
+import Images from '@/views/admin/content/Images.vue';
+import Bidding from '@/views/admin/Bidding.vue';
+import MemberInfo from '@/views/admin/members/Info.vue';
+import MemberWallet from '@/views/admin/members/Wallet.vue';
+import MemberKYC from '@/views/admin/members/KYC.vue';
+import AccountingDeposit from '@/views/admin/accounting/Deposit.vue';
+import AccountingWithdraw from '@/views/admin/accounting/Withdraw.vue';
+import AccountingRecords from '@/views/admin/accounting/Records.vue';
 
 const adminRoutes = {
   path: '/admin',
@@ -11,15 +19,66 @@ const adminRoutes = {
       path: '',
       name: 'AdminDashboard',
       component: Dashboard,
-      meta: { requiresAuth: true } // 範例：需要驗證
+      meta: { requiresAuth: true }
     },
-    // {
-    //   path: 'users',
-    //   name: 'AdminUsers',
-    //   component: UserList,
-    //   meta: { requiresAuth: true }
-    // },
-    // 更多後台路由可以在這裡添加
+    // 內容管理
+    {
+      path: 'content/announcements',
+      name: 'AdminContentAnnouncements',
+      component: Announcements,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: 'content/images',
+      name: 'AdminContentImages',
+      component: Images,
+      meta: { requiresAuth: true }
+    },
+    // 標會管理
+    {
+      path: 'bidding',
+      name: 'AdminBidding',
+      component: Bidding,
+      meta: { requiresAuth: true }
+    },
+    // 會員管理
+    {
+      path: 'members/info',
+      name: 'AdminMembersInfo',
+      component: MemberInfo,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: 'members/wallet',
+      name: 'AdminMembersWallet',
+      component: MemberWallet,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: 'members/kyc',
+      name: 'AdminMembersKYC',
+      component: MemberKYC,
+      meta: { requiresAuth: true }
+    },
+    // 帳務管理
+    {
+      path: 'accounting/deposit',
+      name: 'AdminAccountingDeposit',
+      component: AccountingDeposit,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: 'accounting/withdraw',
+      name: 'AdminAccountingWithdraw',
+      component: AccountingWithdraw,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: 'accounting/records',
+      name: 'AdminAccountingRecords',
+      component: AccountingRecords,
+      meta: { requiresAuth: true }
+    }
   ]
 };
 
