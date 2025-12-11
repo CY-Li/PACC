@@ -32,7 +32,7 @@ const routes = [
     name: 'Wallet',
     component: Wallet,
   },
-  adminRoutes, // Add admin routes to the main routes array
+  ...adminRoutes, // Add admin routes to the main routes array
 ];
 
 const router = createRouter({

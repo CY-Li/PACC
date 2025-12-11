@@ -12,9 +12,15 @@ const showPublicLayout = computed(() => {
 
 <template>
   <Header v-if="showPublicLayout" />
-  <main :class="{ 'public-main': showPublicLayout }">
+
+  <!-- If it's a public page, wrap router-view in a main tag -->
+  <main v-if="showPublicLayout" class="public-main">
     <router-view />
   </main>
+  
+  <!-- Otherwise (for admin/login), render the router-view directly -->
+  <router-view v-else />
+
   <Footer v-if="showPublicLayout" />
 </template>
 
