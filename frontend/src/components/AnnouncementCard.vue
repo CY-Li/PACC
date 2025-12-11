@@ -30,13 +30,13 @@ const emit = defineEmits(['edit', 'delete']);
 const statusClass = computed(() => {
   switch (props.announcement.status) {
     case '發佈中':
-      return 'status--published';
+      return 'bg-success';
     case '草稿':
-      return 'status--draft';
+      return 'bg-warning text-dark';
     case '已封存':
-      return 'status--archived';
+      return 'bg-secondary';
     default:
-      return 'status--default';
+      return 'bg-light text-dark';
   }
 });
 </script>
@@ -70,26 +70,6 @@ const statusClass = computed(() => {
     &:hover, &:focus {
       color: $primary;
     }
-  }
-
-  .status--published {
-    background-color: $primary;
-    color: $white;
-  }
-
-  .status--draft {
-    background-color: $gray;
-    color: $white;
-  }
-  
-  .status--archived {
-    background-color: $secondary;
-    color: $black;
-  }
-
-  .status--default {
-    background-color: $gray;
-    color: $white;
   }
 }
 </style>

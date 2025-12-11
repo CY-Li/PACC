@@ -26,14 +26,62 @@
       </div>
     </div>
 
-    <!-- Announcements Grid -->
-    <div class="row g-4">
-      <div v-for="announcement in filteredAnnouncements" :key="announcement.id" class="col-12 col-md-6 col-lg-4">
+    <!-- Announcements Display: Cards for mobile, Table for desktop -->
+
+    <!-- Card View (for mobile) -->
+    <div class="row g-4 d-md-none">
+      <div v-for="announcement in filteredAnnouncements" :key="announcement.id" class="col-12">
         <AnnouncementCard 
           :announcement="announcement"
           @edit="handleEdit(announcement)"
           @delete="handleDelete(announcement.id)"
         />
+      </div>
+    </div>
+
+    <!-- Table View (for desktop) -->
+    <div class="card d-none d-md-block">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead>
+              <tr>
+                <th scope="col" style="min-width: 300px;">標題</th>
+                <th scope="col">狀態</th>
+                <th scope="col">發布日期</th>
+                <th scope="col" class="text-end">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-if="filteredAnnouncements.length === 0">
+                <td colspan="4" class="text-center text-muted py-4">
+                  沒有符合條件的公告
+                </td>
+              </tr>
+              <tr v-for="announcement in filteredAnnouncements" :key="`table-${announcement.id}`">
+                <td>{{ announcement.title }}</td>
+                <td>
+                  <span class="badge" :class="{
+                    'bg-success': announcement.status === '發佈中',
+                    'bg-warning text-dark': announcement.status === '草稿',
+                    'bg-secondary': announcement.status === '已封存'
+                  }">
+                    {{ announcement.status }}
+                  </span>
+                </td>
+                <td>{{ announcement.date }}</td>
+                <td class="text-end">
+                  <button class="btn btn-sm btn-outline-primary me-2" @click="handleEdit(announcement)">
+                    <i class="bi bi-pencil-fill"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" @click="handleDelete(announcement.id)">
+                    <i class="bi bi-trash-fill"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 

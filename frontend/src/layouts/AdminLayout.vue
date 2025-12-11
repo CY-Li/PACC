@@ -49,8 +49,8 @@
               {{ adminInitial }}
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="#">帳號設定</a></li>
-              <li><hr class="dropdown-divider"></li>
+              <!-- <li><a class="dropdown-item" href="#">帳號設定</a></li>
+              <li><hr class="dropdown-divider"></li> -->
               <li><div class="dropdown-item dropdown-item-danger" @click="adminLogout" style="cursor: pointer;">登出</div></li>
             </ul>
           </div>

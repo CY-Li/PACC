@@ -1,23 +1,70 @@
 /* frontend/src/assets/scss/admin.scss */
-/*
-  This file is for admin-specific styles.
-  You can import other SCSS partials here or write global admin styles.
-*/
+@use 'variables' as *;
 
-// Example: Define some admin-specific variables
-$admin-primary-color: #007bff;
-$admin-secondary-color: #6c757d;
-$admin-bg-color: #f8f9fa;
+// --- REDESIGNED ADMIN TABLE STYLES ---
 
-// Example: Basic styles for admin body
-body.admin-mode {
-  background-color: $admin-bg-color;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+// A cleaner, flatter card design for the admin area
+.card {
+  background-color: #fff;
+  border-radius: 8px;
+  border: none; // No border as requested
+  box-shadow: none; // No shadow for a cleaner look
+  overflow: hidden; // Ensures table corners are rounded
 }
 
-// You can add more specific styles for admin components here.
-// For instance, if you have an AdminSidebar component, you might add:
-// .admin-sidebar {
-//   background-color: #343a40;
-//   color: white;
-// }
+.table {
+  // Resetting some bootstrap defaults for a custom design
+  --bs-table-striped-bg: transparent;
+  --bs-table-accent-bg: transparent;
+  --bs-table-hover-bg: transparent;
+  border-collapse: separate;
+  border-spacing: 0;
+
+  // Professional Header Style
+  & > thead {
+    th {
+      background-color: rgba($secondary, 0.1); // Use theme secondary color, but very light
+      color: $black; // Darker text for header
+      border: none;
+      padding: 1rem 1.5rem;
+      font-weight: 700; // Bolder font for header
+      font-size: 0.9rem;
+      text-transform: capitalize; // Standard capitalization
+      letter-spacing: normal; // Normal letter spacing
+      text-align: left; // Left-align header text
+    }
+  }
+
+  // Row Styling
+  & > tbody {
+    tr {
+      transition: none; // No transition for hover effect
+      td {
+        padding: 1rem 1.5rem;
+        border: none; // No border as requested
+        vertical-align: middle;
+        text-align: left; // Left-align content
+      }
+    }
+    
+    // No Hover Effect
+    tr:hover {
+      transform: none; // Remove floating effect
+      box-shadow: none; // Remove shadow effect
+      cursor: default; // Change cursor back to default
+    }
+
+    // No border on the last row
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    // Empty state message - assuming this part is still relevant
+    .text-center.text-muted {
+      padding: 3rem;
+      font-style: italic;
+    }
+  }
+}
+
+
