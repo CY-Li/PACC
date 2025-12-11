@@ -41,11 +41,19 @@
           <button class="hamburger-button" @click="toggleMobileMenu">
             <i class="bi bi-list"></i>
           </button>
-          <span class="admin-title">管理後台</span>
+          <Breadcrumb :menus="menus" />
         </div>
         <div class="user-info">
-          <span>Admin</span>
-          <button class="logout-button">登出</button>
+          <div class="dropdown">
+            <button class="admin-avatar-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="管理員選單">
+              {{ adminInitial }}
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="#">帳號設定</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><div class="dropdown-item dropdown-item-danger" @click="adminLogout" style="cursor: pointer;">登出</div></li>
+            </ul>
+          </div>
         </div>
       </header>
       <main class="admin-main">
@@ -61,8 +69,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { RouterLink, RouterView } from 'vue-router';
+import { ref, computed } from 'vue'; // Added computed
+import { useRouter, RouterLink, RouterView } from 'vue-router'; // Added useRouter
+import Breadcrumb from '@/components/admin/Breadcrumb.vue';
+
+const router = useRouter(); // Initialize useRouter
 
 // State for desktop collapsible sidebar
 const isCollapsed = ref(false);
@@ -70,6 +81,12 @@ const openSubmenu = ref(null);
 
 // State for mobile fly-out menu
 const isMobileMenuOpen = ref(false);
+
+// Admin user data for avatar
+const adminInitial = computed(() => {
+  // In a real app, this would come from an authenticated user's name
+  return 'A'; // Placeholder for Admin
+});
 
 const menus = ref([
   { name: 'dashboard', to: '/admin', title: '首頁', icon: 'bi bi-speedometer2' },
@@ -121,6 +138,12 @@ const toggleSubmenu = (menuName) => {
 
 const toggleMobileMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value;
+};
+
+const adminLogout = () => {
+  // In a real app, this would involve an API call to invalidate the session
+  localStorage.removeItem("admin_token"); // Example: clear admin token
+  router.push('/admin/login'); // Redirect to admin login page
 };
 </script>
 
@@ -297,28 +320,61 @@ $transition-speed: 0.3s;
     gap: 1rem;
   }
   .hamburger-button { display: none; }
-  .admin-title { font-size: 1.4rem; font-weight: bold; }
+  
   .user-info {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    .logout-button {
-      background-color: $primary;
-      color: $white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
+    
+    .admin-avatar-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: transparent; // Changed to transparent
+      border: 1px solid $primary; // Added primary color border
+      color: $primary; // Text color matches border
+      font-size: 18px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
-      transition: background-color 0.2s ease;
-      &:hover { background-color: color.adjust($primary, $lightness: -10%); }
+      transition: background-color 0.2s ease, color 0.2s ease;
+
+      &:hover {
+        background-color: color.adjust($primary, $alpha: -0.9); // Light primary background on hover
+        color: color.adjust($primary, $lightness: -10%); // Slightly darker primary for text on hover
+      }
+    }
+
+    .dropdown-menu {
+      background: white; // White background for modern look
+      border-radius: 8px;
+      margin-top: 10px !important;
+      border: 1px solid #eee;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08); // Subtle shadow
+
+      .dropdown-item {
+        color: $black; // Default text color
+        &:hover {
+          background-color: #f8f9fa; // Light hover background
+          color: $primary; // Primary color on hover
+        }
+      }
+
+      .dropdown-item-danger {
+        color: $primary; // Use primary color for danger action text
+        &:hover {
+          background-color: color.adjust($primary, $alpha: -0.9); // Very light primary background on hover
+          color: color.adjust($primary, $lightness: -10%); // Slightly darker primary for text on hover
+        }
+      }
     }
   }
 }
 
-.admin-main { flex-grow: 1; padding: 1.5rem; }
+.admin-main { flex-grow: 1; }
 .admin-content {
   background-color: $white;
-  padding: 1.5rem;
   border-radius: 8px;
 }
 .admin-footer {
@@ -388,5 +444,4 @@ $transition-speed: 0.3s;
       width: 100% !important;
     }
   }
-}
-</style>
+}</style>

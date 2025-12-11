@@ -1,7 +1,12 @@
 @use 'variables' as *;
 
-@import url('https://fonts.googleapis.com/css?family=Noto+Sans+TC:500,700|Raleway:700');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital@0;1&display=swap');
+// 1. Load Bootstrap and configure it with our custom variables.
+// This replaces the deprecated @import rule.
+@use "bootstrap/scss/bootstrap" with (
+  $primary: #a11f1a
+);
+
+// --- Original custom styles below ---
 
 * {
   font-family: 'Noto Sans TC', Microsoft JhengHei, sans-serif;
