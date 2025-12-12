@@ -96,7 +96,7 @@ const currentTitle = computed(() => {
       text-decoration: none;
       transition: color 0.2s;
       &:hover {
-        color: #0d6efd;
+        color: #A11F1A;
       }
     }
     &.active {

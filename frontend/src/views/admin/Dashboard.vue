@@ -1,7 +1,7 @@
 <template>
   <div class="admin-dashboard p-3">
     <!-- Page Heading -->
-    <h4 class="mb-4 text-gray-800" style="text-align: left; padding-left: 12px;">常用功能</h4>
+    <h5 class="text-gray-800" style="text-align: left; padding: 12px;">常用功能</h5>
 
     <!-- Common Functions Row -->
     <div class="row">
@@ -21,46 +21,52 @@
       </div>
       <div class="col-4 mb-4">
         <QuickLinkCard
-          title="帳務紀錄" <!-- Changed from "帳務管理" -->
+          title="帳務紀錄"
           icon="bi bi-cash-stack"
-          to="/admin/accounting/records" <!-- Changed from "/admin/accounting/deposit" -->
+          to="/admin/accounting/records"
         />
       </div>
     </div>
     
     <!-- Page Heading -->
-    <h4 class="mb-4 text-gray-800" style="text-align: left; padding-left: 12px;">待審核案件</h4>
+    <h5 class="text-gray-800" style="text-align: left; padding: 12px;">待審核案件</h5>
 
     <!-- Pending Cases Row -->
     <div class="row">
       <!-- KYC Card -->
       <div class="col-4 mb-4">
-        <DashboardWidgetCard
-          title="KYC"
-          :count="pendingCases.kyc"
-          icon="bi bi-person-check-fill"
-          gradient="linear-gradient(45deg, #a11f1a, #c24e4a)"
-        />
+        <router-link to="/admin/members/kyc" class="text-decoration-none">
+          <DashboardWidgetCard
+            title="KYC"
+            :count="pendingCases.kyc"
+            icon="bi bi-person-check-fill"
+            iconColor="#a11f1a"
+          />
+        </router-link>
       </div>
 
       <!-- Deposit Card -->
       <div class="col-4 mb-4">
-        <DashboardWidgetCard
-          title="儲值"
-          :count="pendingCases.deposit"
-          icon="bi bi-box-arrow-in-down"
-          gradient="linear-gradient(45deg, #c24e4a, #deac9c)"
-        />
+        <router-link to="/admin/accounting/deposit" class="text-decoration-none">
+          <DashboardWidgetCard
+            title="儲值"
+            :count="pendingCases.deposit"
+            icon="bi bi-box-arrow-in-down"
+            iconColor="#a11f1a"
+          />
+        </router-link>
       </div>
 
       <!-- Withdrawal Card -->
       <div class="col-4 mb-4">
-        <DashboardWidgetCard
-          title="提領"
-          :count="pendingCases.withdrawal"
-          icon="bi bi-box-arrow-up"
-          gradient="linear-gradient(45deg, #deac9c, #e8c7b9)"
-        />
+        <router-link to="/admin/accounting/withdraw" class="text-decoration-none">
+          <DashboardWidgetCard
+            title="提領"
+            :count="pendingCases.withdrawal"
+            icon="bi bi-box-arrow-up"
+            iconColor="#a11f1a"
+          />
+        </router-link>
       </div>
     </div>
   </div>
