@@ -1,33 +1,43 @@
 <template>
   <div class="container-fluid p-4">
     <!-- Header Controls -->
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
-      <!-- Filters and Search -->
-      <div class="d-flex flex-grow-1 gap-3">
-        <!-- Status Filter -->
-        <select class="form-select" v-model="statusFilter" style="max-width: 180px;">
-          <option>全部狀態</option>
-          <option>發佈中</option>
-          <option>草稿</option>
-          <option>已封存</option>
-        </select>
-        <!-- Search Input -->
-        <div class="input-group">
+    <div class="mb-4">
+      <!-- Search Input and Add New Button -->
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-3">
+        <div class="input-group flex-grow-1">
           <span class="input-group-text"><i class="bi bi-search"></i></span>
           <input type="text" class="form-control" placeholder="搜尋標題..." v-model="searchQuery">
         </div>
-      </div>
-      <!-- Add New Button -->
-      <div class="flex-shrink-0">
-        <button class="btn btn-primary w-100" @click="handleAddNew">
-          <i class="bi bi-plus-lg me-2"></i>
-          <span>新增公告</span>
-        </button>
+        <div class="flex-shrink-0">
+          <button class="btn btn-primary w-100" @click="handleAddNew">
+            <i class="bi bi-plus-lg me-2"></i>
+            <span>新增公告</span>
+          </button>
+        </div>
       </div>
     </div>
 
     <!-- Announcements Display: Cards for mobile, Table for desktop -->
 
+
+      <!-- Status and Date Filters -->
+      <div class="d-flex justify-content-start gap-3" style="margin-top: 40px; margin-bottom: 20px;">
+        <select class="form-select" v-model="statusFilter" style="max-width: 120px;">
+          <option>全部狀態</option>
+          <option>發佈中</option>
+          <option>草稿</option>
+          <option>已封存</option>
+        </select>
+        <VueDatePicker 
+          v-model="dateRangeFilter"
+          range 
+          :time-config="{ enableTimePicker: false }"
+          auto-apply
+          placeholder="選擇日期範圍"
+          :text-input="{ format: formatDateRange }"
+          style="max-width: 260px;"
+        />
+      </div>
     <!-- Card View (for mobile) -->
     <div class="row g-4 d-md-none">
       <div v-for="announcement in filteredAnnouncements" :key="announcement.id" class="col-12">
@@ -71,7 +81,7 @@
                 </td>
                 <td>{{ announcement.date }}</td>
                 <td class="text-end">
-                  <button class="btn btn-sm btn-outline-primary me-2" @click="handleEdit(announcement)">
+                  <button class="btn btn-sm btn-outline-dark me-2" @click="handleEdit(announcement)">
                     <i class="bi bi-pencil-fill"></i>
                   </button>
                   <button class="btn btn-sm btn-outline-danger" @click="handleDelete(announcement.id)">
@@ -109,11 +119,14 @@
 import { ref, computed } from 'vue';
 import AnnouncementCard from '@/components/AnnouncementCard.vue';
 import AnnouncementModal from '@/components/AnnouncementModal.vue';
+import { VueDatePicker } from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
 
 const showModal = ref(false);
 const editingAnnouncement = ref(null);
 const searchQuery = ref('');
 const statusFilter = ref('全部狀態');
+const dateRangeFilter = ref(null);
 
 const announcements = ref([
   { id: 1, title: '系統維護通知', content: '詳細內容...', date: '2025-12-10', status: '發佈中' },
@@ -123,6 +136,26 @@ const announcements = ref([
   { id: 5, title: '舊版 App 將於月底停止支援', content: '詳細內容...', date: '2025-11-20', status: '已封存' },
   { id: 6, title: '會員條款更新說明', content: '詳細內容...', date: '2025-11-15', status: '已封存' },
 ]);
+
+// Custom format function for the date range picker input
+const formatDateRange = (dates) => {
+  if (!dates || dates.length !== 2) {
+    return '';
+  }
+  const startDate = dates[0];
+  const endDate = dates[1];
+
+  const pad = (num) => num.toString().padStart(2, '0');
+
+  const format = (date) => {
+    const year = date.getFullYear();
+    const month = pad(date.getMonth() + 1);
+    const day = pad(date.getDate());
+    return `${year}/${month}/${day}`;
+  };
+
+  return `${format(startDate)} - ${format(endDate)}`;
+}
 
 const filteredAnnouncements = computed(() => {
   let filtered = announcements.value;
@@ -137,6 +170,24 @@ const filteredAnnouncements = computed(() => {
     filtered = filtered.filter(a => 
       a.title.toLowerCase().includes(searchQuery.value.toLowerCase())
     );
+  }
+
+  // Apply date range filter
+  if (dateRangeFilter.value && dateRangeFilter.value.length === 2) {
+    const [startDate, endDate] = dateRangeFilter.value;
+    if (startDate && endDate) {
+      // Set time to the very beginning of the start day and very end of the end day
+      const start = new Date(startDate);
+      start.setHours(0, 0, 0, 0);
+
+      const end = new Date(endDate);
+      end.setHours(23, 59, 59, 999);
+
+      filtered = filtered.filter(a => {
+        const announcementDate = new Date(a.date);
+        return announcementDate >= start && announcementDate <= end;
+      });
+    }
   }
 
   return filtered;
