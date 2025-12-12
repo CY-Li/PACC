@@ -92,7 +92,7 @@ import { ref, computed } from 'vue';
 import AdminCrudLayout from '@/layouts/AdminCrudLayout.vue';
 import AnnouncementCard from '@/components/admin/content/AnnouncementCard.vue';
 import AnnouncementModal from '@/components/admin/content/AnnouncementModal.vue';
-import { VueDatePicker } from '@vuepic/vue-datepicker';
+import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 
 const showModal = ref(false);
