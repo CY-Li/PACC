@@ -1,50 +1,86 @@
 <template>
-  <div class="admin-dashboard">
-    <h2>儀表板</h2>
-    <p>歡迎來到管理後台！</p>
-    <!-- 未來可以在這裡添加各種統計數據、快捷操作等 -->
-    <div class="dashboard-widgets">
-      <div class="widget">
-        <h3>使用者統計</h3>
-        <p>總使用者數：1234</p>
+  <div class="admin-dashboard p-3">
+    <!-- Page Heading -->
+    <h4 class="mb-4 text-gray-800" style="text-align: left; padding-left: 12px;">常用功能</h4>
+
+    <!-- Common Functions Row -->
+    <div class="row">
+      <div class="col-4 mb-4">
+        <QuickLinkCard
+          title="標會管理"
+          icon="bi bi-collection-fill"
+          to="/admin/bidding"
+        />
       </div>
-      <div class="widget">
-        <h3>最新訂單</h3>
-        <ul>
-          <li>訂單 #1001</li>
-          <li>訂單 #1002</li>
-        </ul>
+      <div class="col-4 mb-4">
+        <QuickLinkCard
+          title="會員資料"
+          icon="bi bi-people-fill"
+          to="/admin/members/info"
+        />
+      </div>
+      <div class="col-4 mb-4">
+        <QuickLinkCard
+          title="帳務紀錄" <!-- Changed from "帳務管理" -->
+          icon="bi bi-cash-stack"
+          to="/admin/accounting/records" <!-- Changed from "/admin/accounting/deposit" -->
+        />
+      </div>
+    </div>
+    
+    <!-- Page Heading -->
+    <h4 class="mb-4 text-gray-800" style="text-align: left; padding-left: 12px;">待審核案件</h4>
+
+    <!-- Pending Cases Row -->
+    <div class="row">
+      <!-- KYC Card -->
+      <div class="col-4 mb-4">
+        <DashboardWidgetCard
+          title="KYC"
+          :count="pendingCases.kyc"
+          icon="bi bi-person-check-fill"
+          gradient="linear-gradient(45deg, #a11f1a, #c24e4a)"
+        />
+      </div>
+
+      <!-- Deposit Card -->
+      <div class="col-4 mb-4">
+        <DashboardWidgetCard
+          title="儲值"
+          :count="pendingCases.deposit"
+          icon="bi bi-box-arrow-in-down"
+          gradient="linear-gradient(45deg, #c24e4a, #deac9c)"
+        />
+      </div>
+
+      <!-- Withdrawal Card -->
+      <div class="col-4 mb-4">
+        <DashboardWidgetCard
+          title="提領"
+          :count="pendingCases.withdrawal"
+          icon="bi bi-box-arrow-up"
+          gradient="linear-gradient(45deg, #deac9c, #e8c7b9)"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-// 儀表板的邏輯，例如數據載入
+import { ref } from 'vue';
+import DashboardWidgetCard from '@/components/admin/dashboard/DashboardWidgetCard.vue';
+import QuickLinkCard from '@/components/admin/dashboard/QuickLinkCard.vue';
+
+const pendingCases = ref({
+  kyc: 12,
+  deposit: 5,
+  withdrawal: 3,
+});
 </script>
 
 <style scoped>
-.admin-dashboard {
-  /* 儀表板的樣式 */
-}
-
-.dashboard-widgets {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
-
-.widget {
-  background-color: #f9f9f9;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  padding: 1rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
-
-.widget h3 {
-  margin-top: 0;
-  color: #333;
+/* Scoped styles can be added here if needed */
+.text-gray-800 {
+  color: #5a5c69 !important;
 }
 </style>
