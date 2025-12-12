@@ -1,5 +1,5 @@
 <template>
-  <div class="card bidding-card h-100">
+  <div class="card bidding-card h-100" @click="$emit('edit', bidding)">
     <div class="card-body">
       <div class="d-flex justify-content-between align-items-start mb-2">
         <h5 class="card-title mb-0 me-3">{{ bidding.serial }}</h5>
@@ -25,7 +25,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['delete']); // Only delete action is needed
+const emit = defineEmits(['edit', 'delete']); // Added 'edit' action
 
 const statusClass = computed(() => {
   switch (props.bidding.status) {
