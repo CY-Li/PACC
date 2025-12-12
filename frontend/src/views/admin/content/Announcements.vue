@@ -1,110 +1,82 @@
 <template>
-  <div class="container-fluid p-4">
-    <!-- Header Controls -->
-    <div class="mb-4">
-      <!-- Search Input and Add New Button -->
-      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-3">
-        <div class="input-group flex-grow-1">
-          <span class="input-group-text"><i class="bi bi-search"></i></span>
-          <input type="text" class="form-control" placeholder="搜尋標題..." v-model="searchQuery">
+  <div>
+    <AdminCrudLayout
+      :items="filteredAnnouncements"
+      :table-columns="['標題', '狀態', '發布日期', '操作']"
+      @add-new="handleAddNew"
+    >
+      <!-- Filters Slot -->
+      <template #filters>
+        <div class="d-flex flex-column gap-3 mb-3"> <!-- Ensure vertical stacking on all screen sizes -->
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control" placeholder="搜尋標題..." v-model="searchQuery">
+          </div>
+          <div class="d-flex gap-3"> <!-- Keep side-by-side on all screens -->
+            <select class="form-select" v-model="statusFilter" style="max-width: 120px;">
+              <option>全部狀態</option>
+              <option>發佈中</option>
+              <option>草稿</option>
+              <option>已封存</option>
+            </select>
+            <VueDatePicker 
+              v-model="dateRangeFilter"
+              range 
+              :time-config="{ enableTimePicker: false }"
+              auto-apply
+              placeholder="選擇日期範圍"
+              :text-input="{ format: formatDateRange }"
+              style="max-width: 260px;"
+            />
+          </div>
         </div>
-        <div class="flex-shrink-0">
-          <button class="btn btn-primary w-100" @click="handleAddNew">
-            <i class="bi bi-plus-lg me-2"></i>
-            <span>新增公告</span>
-          </button>
-        </div>
-      </div>
-    </div>
+      </template>
 
-    <!-- Announcements Display: Cards for mobile, Table for desktop -->
-
-
-      <!-- Status and Date Filters -->
-      <div class="d-flex justify-content-start gap-3" style="margin-top: 40px; margin-bottom: 20px;">
-        <select class="form-select" v-model="statusFilter" style="max-width: 120px;">
-          <option>全部狀態</option>
-          <option>發佈中</option>
-          <option>草稿</option>
-          <option>已封存</option>
-        </select>
-        <VueDatePicker 
-          v-model="dateRangeFilter"
-          range 
-          :time-config="{ enableTimePicker: false }"
-          auto-apply
-          placeholder="選擇日期範圍"
-          :text-input="{ format: formatDateRange }"
-          style="max-width: 260px;"
-        />
-      </div>
-    <!-- Card View (for mobile) -->
-    <div class="row g-4 d-md-none">
-      <div v-for="announcement in filteredAnnouncements" :key="announcement.id" class="col-12">
+      <!-- Card Item Slot -->
+      <template #card-item="{ item }">
         <AnnouncementCard 
-          :announcement="announcement"
-          @edit="handleEdit(announcement)"
-          @delete="handleDelete(announcement.id)"
+          :announcement="item"
+          @edit="handleEdit(item)"
+          @delete="handleDelete(item.id)"
         />
-      </div>
-    </div>
+      </template>
 
-    <!-- Table View (for desktop) -->
-    <div class="card d-none d-md-block">
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-hover align-middle">
-            <thead>
-              <tr>
-                <th scope="col" style="min-width: 300px;">標題</th>
-                <th scope="col">狀態</th>
-                <th scope="col">發布日期</th>
-                <th scope="col" class="text-end">操作</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-if="filteredAnnouncements.length === 0">
-                <td colspan="4" class="text-center text-muted py-4">
-                  沒有符合條件的公告
-                </td>
-              </tr>
-              <tr v-for="announcement in filteredAnnouncements" :key="`table-${announcement.id}`">
-                <td>{{ announcement.title }}</td>
-                <td>
-                  <span class="badge" :class="{
-                    'bg-success': announcement.status === '發佈中',
-                    'bg-warning text-dark': announcement.status === '草稿',
-                    'bg-secondary': announcement.status === '已封存'
-                  }">
-                    {{ announcement.status }}
-                  </span>
-                </td>
-                <td>{{ announcement.date }}</td>
-                <td class="text-end">
-                  <button class="btn btn-sm btn-outline-dark me-2" @click="handleEdit(announcement)">
-                    <i class="bi bi-pencil-fill"></i>
-                  </button>
-                  <button class="btn btn-sm btn-outline-danger" @click="handleDelete(announcement.id)">
-                    <i class="bi bi-trash-fill"></i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+      <!-- Table Row Slot -->
+      <template #table-row="{ item }">
+        <td>{{ item.title }}</td>
+        <td>
+          <span class="badge" :class="{
+            'bg-success': item.status === '發佈中',
+            'bg-warning text-dark': item.status === '草稿',
+            'bg-secondary': item.status === '已封存'
+          }">
+            {{ item.status }}
+          </span>
+        </td>
+        <td>{{ item.date }}</td>
+        <td class="text-end" style="width: 120px;">
+          <button class="btn btn-sm btn-outline-dark me-2" @click="handleEdit(item)">
+            <i class="bi bi-pencil-fill"></i>
+          </button>
+          <button class="btn btn-sm btn-outline-danger" @click="handleDelete(item.id)">
+            <i class="bi bi-trash-fill"></i>
+          </button>
+        </td>
+      </template>
 
-    <!-- Pagination -->
-    <nav aria-label="Page navigation" class="mt-4 d-flex justify-content-center">
-      <ul class="pagination">
-        <li class="page-item disabled"><a class="page-link" href="#">上一頁</a></li>
-        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">下一頁</a></li>
-      </ul>
-    </nav>
+      <!-- Pagination Slot -->
+      <template #pagination>
+        <nav aria-label="Page navigation" class="mt-4 d-flex justify-content-center">
+          <ul class="pagination">
+            <li class="page-item disabled"><a class="page-link" href="#">上一頁</a></li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">下一頁</a></li>
+          </ul>
+        </nav>
+      </template>
+    </AdminCrudLayout>
 
     <!-- Modal for Add/Edit -->
     <AnnouncementModal 
@@ -117,8 +89,9 @@
 
 <script setup>
 import { ref, computed } from 'vue';
-import AnnouncementCard from '@/components/AnnouncementCard.vue';
-import AnnouncementModal from '@/components/AnnouncementModal.vue';
+import AdminCrudLayout from '@/layouts/AdminCrudLayout.vue';
+import AnnouncementCard from '@/components/admin/content/AnnouncementCard.vue';
+import AnnouncementModal from '@/components/admin/content/AnnouncementModal.vue';
 import { VueDatePicker } from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 
