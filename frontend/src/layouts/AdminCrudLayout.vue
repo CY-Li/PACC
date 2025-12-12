@@ -3,7 +3,7 @@
     <!-- 頁面標頭 -->
     <div class="d-flex align-items-center mb-4">
       <h1 v-if="title" class="h3 mb-0 text-gray-800">{{ title }}</h1>
-      <button class="btn btn-primary ms-auto" @click="$emit('add-new')">
+      <button v-if="!hideAddNewButton" class="btn btn-primary ms-auto" @click="$emit('add-new')">
         <i class="bi bi-plus-lg me-2"></i>
         <span>新增</span>
       </button>
@@ -61,8 +61,6 @@
 </template>
 
 <script setup>
-
-
 defineProps({
   title: {
     type: String,
@@ -75,6 +73,10 @@ defineProps({
   tableColumns: {
     type: Array,
     default: () => [],
+  },
+  hideAddNewButton: {
+    type: Boolean,
+    default: false,
   },
 });
 
