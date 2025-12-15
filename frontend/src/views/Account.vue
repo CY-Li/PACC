@@ -154,11 +154,11 @@ const getTenderCount = () => {
 };
 
 const getAttendTender = () => {
-  attendTenders.value = [ { tm_type_name: '組織標案A', self_org_available_quantity: 1, self_org_all_quantity: 2, tm_sn: 1 }];
+  attendTenders.value = [ { tm_type_name: '組織標會A', self_org_available_quantity: 1, self_org_all_quantity: 2, tm_sn: 1 }];
 };
 
 const getAllTender = () => {
-  allTenders.value = [ { tm_type_name: '個人標案A', self_available_quantity: 1, self_all_quantity: 1, tm_sn: 2 }];
+  allTenders.value = [ { tm_type_name: '個人標會A', self_available_quantity: 1, self_all_quantity: 1, tm_sn: 2 }];
 };
 
 const kycSubmit = () => {
@@ -181,7 +181,7 @@ const kycSubmit = () => {
 
 const openDetail = (tender) => {
     const mockDetail = {
-        ttr_title: "標案詳情",
+        ttr_title: "標會詳情",
         ttr_detail01: "詳情1",
         ttr_detail02: "詳情2",
         ttr_detail03: "詳情3",
@@ -264,11 +264,11 @@ onMounted(() => {
         </div>
         <div class="myNavs">
             <div @click="setActiveTab('profile')" :class="['nav', 'profile', { 'active': activeTab === 'profile' }]">
-                會員<br class="d-block d-lg-none">資料
-                <div class="text-en fs-12">MEMBER PROFILE</div>
+                變更<br class="d-block d-lg-none">密碼
+                <div class="text-en fs-12">CHANGE PASSWORD</div>
             </div>
             <div @click="setActiveTab('tender')" :class="['nav', 'tender', { 'active': activeTab === 'tender' }]">
-                參與<br class="d-block d-lg-none">標案
+                參與<br class="d-block d-lg-none">標會
                 <div class="text-en fs-12">PARTICIPATE IN THE TENDER</div>
             </div>
             <div @click="setActiveTab('invite')" :class="['nav', 'invite', { 'active': activeTab === 'invite' }]">
@@ -290,8 +290,8 @@ onMounted(() => {
         <!-- 會員資料 -->
         <div v-if="activeTab === 'profile'" class="frame profile">
           <div class="frameTitle">
-            <div class="title-zh">會員資料</div>
-            <div class="title-en text-en">REGISTER ACCOUNT</div>
+            <div class="title-zh">變更密碼</div>
+            <div class="title-en text-en">CHANGE PASSWORD</div>
           </div>
           <div class="date">
             註冊日期　<span class="text-en">{{ formatDate(userData.mm_create_datetime) }}</span>
@@ -327,12 +327,12 @@ onMounted(() => {
                 <div style="color: #e15b5b">無須變更請空白</div>
               </div>
             </div>
-            <div class="tips">
+            <div class="tips" style="text-align: left;">
               <ul>
                 <li>這邊可以放備註</li>
               </ul>
             </div>
-            <div class="form-check formCheck">
+            <div class="form-check formCheck" style="text-align: left;">
               <input class="form-check-input" type="checkbox" value="" name="check_terms" id="check_terms" required>
               <label class="form-check-label" for="check_terms">
                 本人已清楚了解上列備註說明
@@ -345,7 +345,7 @@ onMounted(() => {
           </form>
         </div>
 
-        <!-- 參與標案 -->
+        <!-- 參與標會 -->
         <div v-if="activeTab === 'tender'" class="frame tender">
             <div class="subtotal">
             <div class="child">
@@ -513,7 +513,7 @@ onMounted(() => {
             <!-- 表單 -->
             <form @submit.prevent="kycSubmit" id="kycForm">
                 <div class="pt-4">
-                <div class="formTitle">申請者資料</div>
+                <div class="formTitle" style="text-align: left;">申請者資料</div>
                 <div class="formGroup">
                     <div class="custom-input-group">
                         <label for="kyc-name" class="require">姓名</label>
@@ -564,12 +564,9 @@ onMounted(() => {
                         <input v-model="kycData.wallet_address" type="text" class="form-control" id="wallet-address" name="wallet-address" required>
                     </div>
                 </div>
-                <div class="formTitle">上傳身分證明</div>
+                <div class="formTitle" style="text-align: left;">上傳身分證明</div>
                 <div class="formGroup">
                     <div v-for="(upload, ind) in uploads" :key="ind" class="uploadLayout">
-                    <div class="title">
-                        <li>{{upload.title}}</li>
-                    </div>
                     <div v-for="(img, idx) in upload.images" :key="`${ind}_${idx}`" class="custom-upload-group">
                         <div class="name">{{img.label}}</div>
                         <div class="uploadFrame">
@@ -582,18 +579,18 @@ onMounted(() => {
                     </div>
                     </div>
                 </div>
-                <div class="formTitle">指定受益人</div>
+                <div class="formTitle" style="text-align: left;">指定受益人</div>
                 <div class="formGroup">
                     <div class="custom-input-group">
-                    <label for="beneficiary">指定受益人</label>
+                    <label for="beneficiary">受益人</label>
                     <input v-model="kycData.beneficiary" type="text" class="form-control" id="beneficiary" name="beneficiary">
                     </div>
                     <div class="custom-input-group">
-                    <label for="beneficiary_phone">指定受益人聯絡電話</label>
+                    <label for="beneficiary_phone">聯絡電話</label>
                     <input v-model="kycData.beneficiary_phone" type="text" class="form-control" id="beneficiary_phone" name="beneficiary_phone">
                     </div>
                     <div class="custom-input-group">
-                    <label for="relation">指定受益人關係</label>
+                    <label for="relation">與本人關係</label>
                     <input v-model="kycData.relation" type="text" class="form-control" id="relation" name="relation">
                     </div>
                 </div>

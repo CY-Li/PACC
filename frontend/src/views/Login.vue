@@ -1,19 +1,20 @@
 <template>
   <div class="login-page-wrapper">
     <main>
-      <!-- 快速登入 -->
-      <div class="frameTitle custom-title">
-        <div class="title-zh">快速登入</div>
-        <div class="title-en text-en">LOGIN</div>
-      </div>
+      
       <div v-show="layoutType === 1" class="mainFrame loginFrame ">
         <div class="frameBody">
           <div class="social-login-section">
-            <p class="social-login-title">推薦使用 LINE 快速登入/註冊</p>
+            <!-- 快速登入 -->
+            <div class="frameTitle custom-title">
+              <div class="title-zh">快速登入</div>
+              <div class="title-en text-en">LOGIN</div>
+            </div>
             <button class="line-login-btn" @click="handleLineLogin">
               <i class="bi bi-line"></i>
               <span>使用 LINE 帳號繼續</span>
             </button>
+            <p class="social-login-title">推薦使用 LINE 快速登入/註冊</p>
           </div>
 
           <div class="divider">
@@ -30,12 +31,12 @@
                           <div class="text">會員登入</div>
                           <form @submit.prevent="login" id="login" class="loginForm">
                             <div class="login-input-group">
-                              <label for="account_login" class="form-label">帳號</label>
+                              <label for="account_login" class="form-label" style="text-align: left;">帳號</label>
                               <input v-model="loginForm.account" minlength="4" maxlength="20" required type="text" class="form-control" id="account_login">
                             </div>
             
                             <div class="login-input-group" style="position: relative">
-                              <label for="password_login" class="form-label">密碼</label>
+                              <label for="password_login" class="form-label" style="text-align: left;">密碼</label>
                               <input v-model="loginForm.pswd" minlength="4" maxlength="15" required :type="showPassword? 'text' : 'password'" class="form-control" id="password_login">
                               <span class="input-eye" @click="showPassword = !showPassword">
                                 <i class="bi" :class="[showPassword? 'bi-eye' : 'bi-eye-slash']"></i>
@@ -44,7 +45,7 @@
                             </div>
                             <div class="captcha-container">
                               <div class="valid-group login-input-group">
-                                <label for="valid_login" class="form-label">請輸入驗證碼</label>
+                                <label for="valid_login" class="form-label" style="text-align: left;">請輸入驗證碼</label>
                                 <input v-model="loginForm.validCode" required type="text" class="form-control" id="valid_login" name="valid_login">
                               </div>
                               <div class="validCanvas"><canvas @click="drawCanvas" id="mycanvas" ref="myCanvasRef" width='160' height='40'></canvas></div>
@@ -70,10 +71,9 @@
         </div>
         <div class="frameBody">
           <form @submit.prevent="regist" class="registForm" id="regist">
-            <div class="customLabel">
+            <div class="customLabel" style="text-align: left;">
               <div>
-                <label for="account">帳　　號<span class="required">*</span></label>
-                <div style="color: #a11f1a" class="text-left">(手機號碼)</div>
+                <label for="account">帳號(手機號碼)<span class="required">*</span></label>
               </div>
               <div class="phone-group-input">
                 <select v-model="registForm.areaCode" class="form-select" id="phone_code" required>
@@ -83,36 +83,36 @@
               </div>
               <div class="tip mt-0">台灣地區開頭不必填0</div>
             </div>
-            <div class="customLabel">
-              <label for="password">密　　碼<span class="required">*</span></label>
+            <div class="customLabel" style="text-align: left;">
+              <label for="password">密碼<span class="required">*</span></label>
               <div class="inputContainer"><input v-model="registForm.pswd" minlength="4" maxlength="15" id="password" name="password" type="password" required></div>
               <div class="tip">
                 密碼設定長度至少為8個字元的字串。<br>
                 至少有兩個大小寫之英文字母，並混和數字。<br>
               </div>
             </div>
-            <div class="customLabel">
+            <div class="customLabel" style="text-align: left;">
               <label for="password_confirm">確認密碼<span class="required">*</span></label>
               <div class="inputContainer"><input v-model="registForm.pswd2" id="password_confirm" name="password_confirm" type="password" required></div>
             </div>
-            <div class="customLabel">
-              <label for="referral" class="ps-0 ps-lg-3">推薦人<span class="required">*</span></label>
+            <div class="customLabel" style="text-align: left;">
+              <label for="referral">推薦人<span class="required">*</span></label>
               <div  class="inputContainer"><input id="referral" v-model="registForm.introducer" name="referral" type="text" required></div>
               <div class="tip mt-0">填寫完整電話號碼</div>
             </div>
-            <div class="customLabel">
-              <label for="referral" class="ps-0 ps-lg-3">安置碼<span class="required">*</span></label>
+            <div class="customLabel" style="text-align: left;">
+              <label for="referral">安置碼<span class="required">*</span></label>
               <div  class="inputContainer"><input id="referral" v-model="registForm.invite" name="referral" type="text" required></div>
             </div>
-            <div class="customLabel">
+            <div class="customLabel" style="text-align: left;">
               <label for="password2">二級密碼<span class="required">*</span></label>
               <div class="inputContainer"><input v-model="registForm.mm_2nd_pwd" minlength="4" maxlength="15" id="password2" name="password2" type="password" required></div>
             </div>
-            <div class="customLabel">
+            <div class="customLabel" style="text-align: left;">
               <label for="mm_2nd_pwd2">確認密碼<span class="required">*</span></label>
               <div class="inputContainer"><input v-model="registForm.mm_2nd_pwd2" id="mm_2nd_pwd2" name="mm_2nd_pwd2" type="password" required></div>
             </div>
-            <div class="form-check">
+            <div class="form-check" style="text-align: left;">
               <input class="form-check-input" v-model="registForm.confirm" type="checkbox" name="check_terms" id="check_terms" required>
               <label class="form-check-label" for="check_terms">
                 本人已清楚了解並同意<span @click="showTerms" class="termsBtn" style="color: #d4481c;cursor:pointer">平安商會條款內容</span>
@@ -120,7 +120,6 @@
             </div>
             <button class="submitBtn common-btn">
               <div class="btn-zh w-100">確認註冊</div>
-              <div class="btn-en w-100 text-en">CONFIRM REGISTRATION</div>
             </button>
           </form>
         </div>
